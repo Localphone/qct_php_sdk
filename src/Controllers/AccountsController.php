@@ -34,7 +34,7 @@ class AccountsController {
      * @param  int|null     $limit     Optional parameter: Maximum number of results to return in the response.
      * @param  int|null     $page      Optional parameter: Zero based offset index for the results. e.g. 0 would start at the first result and 10 would start at the eleventh result.
      * @return mixed response from the API call*/
-    public function getAllAccounts (
+    public function getAll (
                 $limit = NULL,
                 $page = NULL) 
     {
@@ -82,7 +82,7 @@ class AccountsController {
      * Create an account
      * @param  AccountModel     $account     Required parameter: TODO: type description here
      * @return void response from the API call*/
-    public function createAnAccount (
+    public function create (
                 $account) 
     {
         //the base uri for api requests
@@ -129,7 +129,7 @@ class AccountsController {
      * Gets an specific account
      * @param  int     $accountNumber      Required parameter: The account number
      * @return mixed response from the API call*/
-    public function getSingleResult (
+    public function getOne (
                 $accountNumber) 
     {
         //the base uri for api requests
@@ -180,7 +180,7 @@ class AccountsController {
      * @param  AccountModel     $account            Required parameter: TODO: type description here
      * @param  int              $accountNumber      Required parameter: The account number
      * @return string response from the API call*/
-    public function updateAccount (
+    public function update (
                 $account,
                 $accountNumber) 
     {
