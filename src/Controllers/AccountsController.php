@@ -34,7 +34,7 @@ class AccountsController {
      * @param  int|null     $limit     Optional parameter: Maximum number of results to return in the response.
      * @param  int|null     $page      Optional parameter: Zero based offset index for the results. e.g. 0 would start at the first result and 10 would start at the eleventh result.
      * @return mixed response from the API call*/
-    public function getAccounts (
+    public function getAllAccounts (
                 $limit = NULL,
                 $page = NULL) 
     {
@@ -69,6 +69,159 @@ class AccountsController {
         //Error handling using HTTP status codes
         if ($response->code == 403) {
             throw new APIException('User not authorized to perform the operation', 403);
+        }
+
+        else if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
+            throw new APIException("HTTP Response Not OK", $response->code);
+        }
+
+        return $response->body;
+    }
+        
+    /**
+     * Create an account
+     * @param  AccountModel     $account     Required parameter: TODO: type description here
+     * @return void response from the API call*/
+    public function createAnAccount (
+                $account) 
+    {
+        //the base uri for api requests
+        $queryBuilder = Configuration::$BASEURI;
+        
+        //prepare query string for API call
+        $queryBuilder = $queryBuilder.'/accounts';
+
+        //validate and preprocess url
+        $queryUrl = APIHelper::cleanUrl($queryBuilder);
+
+        //prepare headers
+        $headers = array (
+            'user-agent'    => 'APIMATIC 2.0',
+            'content-type'  => 'application/json; charset=utf-8',
+            'X-API-TOKEN' => $this->xAPITOKEN
+        );
+
+        //prepare API request
+        $request = Unirest::post($queryUrl, $headers, json_encode($account));
+
+        //and invoke the API call request to fetch the response
+        $response = Unirest::getResponse($request);
+
+        //Error handling using HTTP status codes
+        if ($response->code == 403) {
+            throw new APIException('User not authorized to perform the operation', 403);
+        }
+
+        else if ($response->code == 404) {
+            throw new APIException('Resource not found', 404);
+        }
+
+        else if ($response->code == 400) {
+            throw new APIException('Request could not be understood', 400);
+        }
+
+        else if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
+            throw new APIException("HTTP Response Not OK", $response->code);
+        }
+    }
+        
+    /**
+     * Gets an specific account
+     * @param  int     $accountNumber      Required parameter: The account number
+     * @return mixed response from the API call*/
+    public function getSingleResult (
+                $accountNumber) 
+    {
+        //the base uri for api requests
+        $queryBuilder = Configuration::$BASEURI;
+        
+        //prepare query string for API call
+        $queryBuilder = $queryBuilder.'/accounts/{account_number}';
+
+        //process optional query parameters
+        APIHelper::appendUrlWithTemplateParameters($queryBuilder, array (
+            'account_number' => $accountNumber,
+            ));
+
+        //validate and preprocess url
+        $queryUrl = APIHelper::cleanUrl($queryBuilder);
+
+        //prepare headers
+        $headers = array (
+            'user-agent'    => 'APIMATIC 2.0',
+            'Accept'        => 'application/json',
+            'X-API-TOKEN' => $this->xAPITOKEN
+        );
+
+        //prepare API request
+        $request = Unirest::get($queryUrl, $headers);
+
+        //and invoke the API call request to fetch the response
+        $response = Unirest::getResponse($request);
+
+        //Error handling using HTTP status codes
+        if ($response->code == 403) {
+            throw new APIException('User not authorized to perform the operation', 403);
+        }
+
+        else if ($response->code == 404) {
+            throw new APIException('Resource not found', 404);
+        }
+
+        else if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
+            throw new APIException("HTTP Response Not OK", $response->code);
+        }
+
+        return $response->body;
+    }
+        
+    /**
+     * Update an account.
+     * @param  AccountModel     $account            Required parameter: TODO: type description here
+     * @param  int              $accountNumber      Required parameter: The account number
+     * @return string response from the API call*/
+    public function updateAccount (
+                $account,
+                $accountNumber) 
+    {
+        //the base uri for api requests
+        $queryBuilder = Configuration::$BASEURI;
+        
+        //prepare query string for API call
+        $queryBuilder = $queryBuilder.'/accounts/{account_number}';
+
+        //process optional query parameters
+        APIHelper::appendUrlWithTemplateParameters($queryBuilder, array (
+            'account_number' => $accountNumber,
+            ));
+
+        //validate and preprocess url
+        $queryUrl = APIHelper::cleanUrl($queryBuilder);
+
+        //prepare headers
+        $headers = array (
+            'user-agent'    => 'APIMATIC 2.0',
+            'content-type'  => 'application/json; charset=utf-8',
+            'X-API-TOKEN' => $this->xAPITOKEN
+        );
+
+        //prepare API request
+        $request = Unirest::put($queryUrl, $headers, json_encode($account));
+
+        //and invoke the API call request to fetch the response
+        $response = Unirest::getResponse($request);
+
+        //Error handling using HTTP status codes
+        if ($response->code == 403) {
+            throw new APIException('User not authorized to perform the operation', 403);
+        }
+
+        else if ($response->code == 400) {
+            throw new APIException('Request could not be understood', 400);
+        }
+
+        else if ($response->code == 404) {
+            throw new APIException('Resource not found', 404);
         }
 
         else if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK

@@ -9,7 +9,7 @@ namespace QualityCallTesterLib;
 
 class Configuration {
     //The base Uri for API calls
-    public static $BASEURI = 'http://api.qct.com';
+    public static $BASEURI = 'https://api.qualitycalltester.dev/app_dev.php';
 
     //API Authentication Token
     //TODO: Replace the $xAPITOKEN with an appropriate value
